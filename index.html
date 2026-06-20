@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduKit - 스마트 수업 보조 도구</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- App Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Background Elements for Visual Depth -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="brand" id="logo-btn">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h1>EduKit <span class="badge">PRO</span></h1>
+            </div>
+            <div class="header-controls">
+                <div class="clock-display" id="clock">00:00:00</div>
+                <button id="theme-toggle" class="icon-btn" aria-label="테마 전환">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace (SPA Sections) -->
+        <main class="app-main">
+            <!-- 1. DASHBOARD SECTION -->
+            <section id="dashboard" class="view-section active">
+                <div class="hero-section">
+                    <h2>오늘의 수업을 더 특별하게 ✨</h2>
+                    <p>수업 준비 시간을 줄여주고 학생들의 몰입을 높이는 스마트 도구 모음입니다.</p>
+                </div>
+                
+                <div class="tools-grid">
+                    <!-- Tool 1: Group Maker -->
+                    <div class="tool-card" data-target="group-maker">
+                        <div class="card-glow"></div>
+                        <div class="tool-icon icon-purple">
+                            <i class="fa-solid fa-users-rectangle"></i>
+                        </div>
+                        <h3>모둠 구성기</h3>
+                        <p>무작위 모둠 편성과 직관적인 학생 명단 드래그 앤 드롭 이동 기능을 제공합니다.</p>
+                        <span class="btn-launch">바로가기 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Tool 2: Picker Wheel -->
+                    <div class="tool-card" data-target="picker-wheel">
+                        <div class="card-glow"></div>
+                        <div class="tool-icon icon-cyan">
+                            <i class="fa-solid fa-circle-notch"></i>
+                        </div>
+                        <h3>발표자 추첨기</h3>
+                        <p>룰렛 휠 돌리기 또는 행운의 카드 뽑기로 공정하고 흥미진진한 발표자를 추첨합니다.</p>
+                        <span class="btn-launch">바로가기 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Tool 3: Smart Timer -->
+                    <div class="tool-card" data-target="timer">
+                        <div class="card-glow"></div>
+                        <div class="tool-icon icon-pink">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                        </div>
+                        <h3>시각적 타이머</h3>
+                        <p>원형 진행 상태 바(SVG animation)를 통해 남은 시간을 시각적으로 제공합니다.</p>
+                        <span class="btn-launch">바로가기 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+
+                    <!-- Tool 4: Quiz Cards -->
+                    <div class="tool-card" data-target="quiz-card">
+                        <div class="card-glow"></div>
+                        <div class="tool-icon icon-yellow">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </div>
+                        <h3>플래시 카드 & 퀴즈</h3>
+                        <p>3D 카드 플립 효과로 단어를 암기하고 즉석 OX/객관식 퀴즈 게임을 진행합니다.</p>
+                        <span class="btn-launch">바로가기 <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. GROUP MAKER SECTION -->
+            <section id="tool-group-maker" class="view-section">
+                <div class="section-header">
+                    <button class="back-btn"><i class="fa-solid fa-chevron-left"></i> 대시보드</button>
+                    <h2><i class="fa-solid fa-users-rectangle text-purple"></i> 모둠 구성기</h2>
+                </div>
+                <div class="tool-layout">
+                    <!-- Left Sidebar (Inputs) -->
+                    <div class="tool-panel panel-left">
+                        <h3>학생 명단 설정</h3>
+                        <div class="form-group">
+                            <label for="student-input">학생 이름 입력 (쉼표, 줄바꿈 또는 공백으로 구분)</label>
+                            <textarea id="student-input" placeholder="홍길동, 김철수, 이영희..."></textarea>
+                        </div>
+                        <div class="preset-buttons">
+                            <button id="btn-load-sample" class="secondary-btn btn-sm">샘플 명단 로드</button>
+                            <button id="btn-clear-list" class="danger-btn btn-sm">지우기</button>
+                        </div>
+                        <div class="group-settings">
+                            <h3>편성 옵션</h3>
+                            <div class="toggle-container">
+                                <span class="toggle-label">편성 기준:</span>
+                                <div class="toggle-switch-wrapper">
+                                    <span class="mode-label active" id="label-mode-count">모둠 개수</span>
+                                    <label class="switch">
+                                        <input type="checkbox" id="group-mode-toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="mode-label" id="label-mode-size">모둠원 수</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="group-number" id="group-number-label">원하는 모둠 개수:</label>
+                                <div class="number-control">
+                                    <button class="num-btn" id="btn-group-dec">-</button>
+                                    <input type="number" id="group-number" value="4" min="2" max="20">
+                                    <button class="num-btn" id="btn-group-inc">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="btn-generate-groups" class="primary-btn purple-btn"><i class="fa-solid fa-wand-magic-sparkles"></i> 모둠 생성하기</button>
+                    </div>
+                    <!-- Right Content (Result Workspace) -->
+                    <div class="tool-panel panel-right">
+                        <div class="panel-header">
+                            <h3>생성된 모둠 결과</h3>
+                            <div class="panel-actions">
+                                <button id="btn-save-current" class="secondary-btn btn-sm" title="학생 명단 로컬 저장"><i class="fa-solid fa-floppy-disk"></i> 명단 저장</button>
+                                <button id="btn-fullscreen-group" class="secondary-btn btn-sm" title="전체화면"><i class="fa-solid fa-expand"></i></button>
+                            </div>
+                        </div>
+                        <div class="group-result-container" id="groups-container">
+                            <div class="empty-state">
+                                <i class="fa-solid fa-users"></i>
+                                <p>학생 명단을 입력하고 [모둠 생성하기] 버튼을 눌러주세요.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. PICKER WHEEL SECTION -->
+            <section id="tool-picker-wheel" class="view-section">
+                <div class="section-header">
+                    <button class="back-btn"><i class="fa-solid fa-chevron-left"></i> 대시보드</button>
+                    <h2><i class="fa-solid fa-circle-notch text-cyan"></i> 발표자 추첨기</h2>
+                </div>
+                <div class="tool-layout">
+                    <!-- Left Sidebar (Names) -->
+                    <div class="tool-panel panel-left">
+                        <h3>추첨 후보 설정</h3>
+                        <div class="form-group">
+                            <label for="picker-names-input">후보자 이름 입력</label>
+                            <textarea id="picker-names-input" placeholder="이름을 입력하세요..."></textarea>
+                        </div>
+                        <div class="preset-buttons">
+                            <button id="btn-sync-names" class="secondary-btn btn-sm" title="모둠기 명단 동기화"><i class="fa-solid fa-arrows-rotate"></i> 명단 동기화</button>
+                            <button id="btn-clear-picker-names" class="danger-btn btn-sm">지우기</button>
+                        </div>
+                        <div class="picker-options">
+                            <h3>추첨 옵션</h3>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="chk-exclude-winner" checked>
+                                <span class="checkmark"></span> 당첨된 후보는 다음 추첨에서 제외
+                            </label>
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="chk-sound-effect" checked>
+                                <span class="checkmark"></span> 사운드 효과음 켜기
+                            </label>
+                        </div>
+                        <div class="history-panel">
+                            <h3>당첨자 히스토리</h3>
+                            <ul id="picker-history-list" class="history-list">
+                                <li class="empty-history">아직 당첨자가 없습니다.</li>
+                            </ul>
+                            <button id="btn-reset-history" class="danger-btn btn-sm" style="width: 100%; margin-top: 10px;">히스토리 초기화</button>
+                        </div>
+                    </div>
+                    <!-- Right Content (Canvas Wheel & Control) -->
+                    <div class="tool-panel panel-right center-content">
+                        <div class="wheel-outer-container">
+                            <div class="wheel-pointer">▼</div>
+                            <canvas id="wheel-canvas" width="500" height="500"></canvas>
+                            <button id="btn-spin-wheel" class="spin-btn">SPIN!</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Winner Announcement Overlay -->
+                <div id="winner-modal" class="modal-overlay">
+                    <div class="modal-content">
+                        <div class="confetti-container" id="confetti-canvas-container"></div>
+                        <div class="winner-trophy">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h2>오늘의 발표자!</h2>
+                        <div id="winner-name-display" class="winner-name">홍길동</div>
+                        <button id="btn-close-winner" class="primary-btn cyan-btn">확인</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. SMART TIMER SECTION -->
+            <section id="tool-timer" class="view-section">
+                <div class="section-header">
+                    <button class="back-btn"><i class="fa-solid fa-chevron-left"></i> 대시보드</button>
+                    <h2><i class="fa-solid fa-hourglass-half text-pink"></i> 시각적 타이머</h2>
+                </div>
+                <div class="tool-layout">
+                    <!-- Left Sidebar (Configuration) -->
+                    <div class="tool-panel panel-left">
+                        <div class="tab-container">
+                            <button class="tab-btn active" data-tab="countdown-pane">카운트다운</button>
+                            <button class="tab-btn" data-tab="stopwatch-pane">스톱워치</button>
+                        </div>
+                        
+                        <!-- Tab Content 1: Countdown -->
+                        <div id="countdown-pane" class="tab-pane active">
+                            <h3>시간 설정</h3>
+                            <div class="time-adjuster">
+                                <div class="adjust-col">
+                                    <label>분</label>
+                                    <div class="num-control-vertical">
+                                        <button class="v-num-btn" id="btn-min-up"><i class="fa-solid fa-chevron-up"></i></button>
+                                        <input type="number" id="input-minutes" value="3" min="0" max="99">
+                                        <button class="v-num-btn" id="btn-min-down"><i class="fa-solid fa-chevron-down"></i></button>
+                                    </div>
+                                </div>
+                                <div class="time-colon">:</div>
+                                <div class="adjust-col">
+                                    <label>초</label>
+                                    <div class="num-control-vertical">
+                                        <button class="v-num-btn" id="btn-sec-up"><i class="fa-solid fa-chevron-up"></i></button>
+                                        <input type="number" id="input-seconds" value="0" min="0" max="59">
+                                        <button class="v-num-btn" id="btn-sec-down"><i class="fa-solid fa-chevron-down"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="quick-timer-presets">
+                                <h4>퀵 시간 프리셋</h4>
+                                <div class="preset-grid">
+                                    <button class="preset-btn" data-time="30">30초</button>
+                                    <button class="preset-btn" data-time="60">1분</button>
+                                    <button class="preset-btn" data-time="180">3분</button>
+                                    <button class="preset-btn" data-time="300">5분</button>
+                                    <button class="preset-btn" data-time="600">10분</button>
+                                    <button class="preset-btn" data-time="1200">20분</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content 2: Stopwatch -->
+                        <div id="stopwatch-pane" class="tab-pane">
+                            <h3>스톱워치 기록</h3>
+                            <ul id="lap-list" class="lap-list">
+                                <li class="empty-laps">랩 타임 기록이 없습니다.</li>
+                            </ul>
+                            <button id="btn-clear-laps" class="danger-btn btn-sm" style="width: 100%; margin-top: 10px;">기록 초기화</button>
+                        </div>
+
+                        <div class="timer-sound-settings">
+                            <h3>알림 사운드</h3>
+                            <select id="timer-sound-select" class="form-select">
+                                <option value="bell">맑은 종소리 (Chime)</option>
+                                <option value="alarm">경보 버저 (Buzzer)</option>
+                                <option value="electronic">전자음 (Beep)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Right Content (Visual Timer Display) -->
+                    <div class="tool-panel panel-right center-content">
+                        <div class="timer-display-container">
+                            <svg class="timer-svg" viewBox="0 0 200 200">
+                                <circle class="timer-track" cx="100" cy="100" r="85"></circle>
+                                <circle class="timer-progress" id="timer-bar" cx="100" cy="100" r="85"></circle>
+                            </svg>
+                            <div class="timer-text-overlay">
+                                <div class="timer-digits" id="timer-digits">03:00</div>
+                                <div class="timer-status" id="timer-status">대기 중</div>
+                            </div>
+                        </div>
+                        <div class="timer-controls">
+                            <button id="btn-timer-reset" class="secondary-btn lg-btn"><i class="fa-solid fa-rotate-left"></i> 초기화</button>
+                            <button id="btn-timer-start" class="primary-btn pink-btn lg-btn"><i class="fa-solid fa-play"></i> 시작</button>
+                            <button id="btn-timer-lap" class="secondary-btn lg-btn hidden"><i class="fa-solid fa-stopwatch"></i> 랩타임</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. QUIZ CARDS SECTION -->
+            <section id="tool-quiz-card" class="view-section">
+                <div class="section-header">
+                    <button class="back-btn"><i class="fa-solid fa-chevron-left"></i> 대시보드</button>
+                    <h2><i class="fa-solid fa-lightbulb text-yellow"></i> 플래시 카드 & 퀴즈</h2>
+                </div>
+                
+                <div class="tool-layout">
+                    <!-- Left Sidebar (Quiz Selection & Builder) -->
+                    <div class="tool-panel panel-left">
+                        <div class="tab-container">
+                            <button class="tab-btn-quiz active" data-quiz-tab="quiz-play-pane">카드 놀이</button>
+                            <button class="tab-btn-quiz" data-quiz-tab="quiz-edit-pane">퀴즈 편집기</button>
+                        </div>
+
+                        <!-- Quiz Play Pane -->
+                        <div id="quiz-play-pane" class="tab-pane-quiz active">
+                            <h3>주제 선택</h3>
+                            <div class="quiz-set-selector">
+                                <select id="quiz-set-select" class="form-select">
+                                    <option value="english">기초 영어 영단어 (초등/중등)</option>
+                                    <option value="science">초등/중등 핵심 과학 상식</option>
+                                    <option value="custom">내가 만든 카드 세트</option>
+                                </select>
+                            </div>
+                            
+                            <div class="quiz-mode-selector">
+                                <h3>학습 모드</h3>
+                                <div class="radio-btn-group">
+                                    <label class="radio-btn active">
+                                        <input type="radio" name="quiz-mode" value="flashcard" checked>
+                                        <i class="fa-solid fa-clone"></i> 플래시 카드
+                                    </label>
+                                    <label class="radio-btn">
+                                        <input type="radio" name="quiz-mode" value="game">
+                                        <i class="fa-solid fa-gamepad"></i> 퀴즈 게임
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="quiz-progress-stats">
+                                <div class="stat-row">
+                                    <span>진행 상태:</span>
+                                    <span id="quiz-progress-text">1 / 5</span>
+                                </div>
+                                <div class="progress-bar-container">
+                                    <div class="progress-bar-fill" id="quiz-progress-bar" style="width: 20%;"></div>
+                                </div>
+                                <div id="quiz-score-row" class="stat-row hidden">
+                                    <span>맞춘 개수:</span>
+                                    <span id="quiz-score-text">0 / 0 (0%)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Edit Pane -->
+                        <div id="quiz-edit-pane" class="tab-pane-quiz">
+                            <h3>나만의 플래시카드 제작</h3>
+                            <p class="edit-help-text">단어(질문)와 뜻(정답)을 입력해 커스텀 카드 세트를 구성합니다.</p>
+                            <div class="quiz-builder-table-container">
+                                <table id="quiz-builder-table">
+                                    <thead>
+                                        <tr>
+                                            <th>단어/질문 (앞면)</th>
+                                            <th>뜻/정답 (뒷면)</th>
+                                            <th style="width: 40px;">삭제</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="quiz-builder-tbody">
+                                        <!-- Will be populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button id="btn-add-quiz-row" class="secondary-btn btn-sm" style="width: 100%; margin-top: 8px;"><i class="fa-solid fa-plus"></i> 카드 추가</button>
+                            <button id="btn-save-custom-quiz" class="primary-btn yellow-btn" style="width: 100%; margin-top: 15px;"><i class="fa-solid fa-floppy-disk"></i> 저장 및 적용</button>
+                        </div>
+                    </div>
+
+                    <!-- Right Content (Card Arena) -->
+                    <div class="tool-panel panel-right center-content" id="card-arena">
+                        <!-- Flashcard Area -->
+                        <div id="flashcard-container" class="flashcard-view">
+                            <div class="card-3d" id="flashcard-element">
+                                <div class="card-face card-front">
+                                    <div class="card-category">단어 카드 (앞면)</div>
+                                    <div class="card-question-text" id="card-front-text">Apple</div>
+                                    <div class="card-hint">카드를 클릭하면 뒤집어집니다</div>
+                                </div>
+                                <div class="card-face card-back">
+                                    <div class="card-category">뜻/정답 (뒷면)</div>
+                                    <div class="card-answer-text" id="card-back-text">사과</div>
+                                    <div class="card-hint">다시 클릭하여 앞면 보기</div>
+                                </div>
+                            </div>
+                            <div class="card-nav">
+                                <button id="btn-card-prev" class="nav-btn"><i class="fa-solid fa-chevron-left"></i> 이전</button>
+                                <button id="btn-card-flip" class="secondary-btn"><i class="fa-solid fa-arrows-rotate"></i> 뒤집기</button>
+                                <button id="btn-card-next" class="nav-btn">다음 <i class="fa-solid fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Quiz Game Area (OX / Multiple Choice) -->
+                        <div id="quiz-game-container" class="quiz-game-view hidden">
+                            <div class="quiz-question-box">
+                                <div class="quiz-question-header">수업 퀴즈 게임</div>
+                                <div class="quiz-question-content" id="game-question-text">질문 텍스트</div>
+                            </div>
+                            
+                            <!-- Option Buttons for OX or A/B/C/D -->
+                            <div id="game-options-container" class="game-options-grid">
+                                <!-- Options injected by JS -->
+                            </div>
+
+                            <div class="quiz-nav">
+                                <button id="btn-game-next" class="primary-btn yellow-btn hidden">다음 문제로 <i class="fa-solid fa-arrow-right"></i></button>
+                                <button id="btn-game-restart" class="secondary-btn hidden"><i class="fa-solid fa-rotate-left"></i> 다시 시작</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>&copy; 2026 EduKit. All rights reserved. | 교직원을 위한 스마트 교실 보조 유틸리티</p>
+        </footer>
+    </div>
+
+    <!-- Core App Logic -->
+    <script src="app.js"></script>
+    <script src="group-maker.js"></script>
+    <script src="picker-wheel.js"></script>
+    <script src="timer.js"></script>
+    <script src="quiz-card.js"></script>
+</body>
+</html>
